@@ -21,7 +21,7 @@ cv2_bank_thread.start()
 while True:
     try:
         captures = camera_bank.get_captures()
-        captures = resize.resize(300, 500, captures)
+        captures = resize.resize(400, 300, captures)
         key = multi_display.display(captures)
         if key == ord('q'):
             break
