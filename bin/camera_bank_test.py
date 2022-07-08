@@ -16,6 +16,7 @@ multi_display = multi_display.MultiDisplay()
 cv2_bank = CV2VideoCaptureBank(camera_bank)
 cv2_bank.add_camera("cam1", 0)
 cv2_bank.add_camera("video", r"C:\Users\david\WebstormProjects\tiefighter.mp4")
+cv2_bank.add_camera("video2", r"C:\Users\david\WebstormProjects\vader.mp4")
 cv2_bank_thread = ThreadBank(cv2_bank, delay_ms=10)
 
 cv2_bank_thread.start()

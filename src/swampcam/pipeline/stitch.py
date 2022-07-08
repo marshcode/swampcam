@@ -17,7 +17,9 @@ class ImageStitcher(object):
         capture_names = list(captures.keys())
 
         chunked_list = list()
-        chunk_size = 2 if len(captures) < 2 else int(math.sqrt(len(capture_names)))
+        chunk_size = int(math.sqrt(len(capture_names)))
+        chunk_size = 2 if chunk_size < 2 else chunk_size
+
         for i in range(0, len(capture_names), chunk_size):
             chunked_list.append(capture_names[i:i + chunk_size])
 
