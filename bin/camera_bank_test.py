@@ -9,6 +9,7 @@ from swampcam.displays import multi_display
 
 from swampcam.pipeline import resize
 from swampcam.pipeline import stitch
+from swampcam.pipeline import decorate
 
 camera_bank = camera_bank_mod.CameraBank()
 multi_display = multi_display.MultiDisplay()
@@ -30,6 +31,7 @@ try:
         if not captures:
             continue
 
+        captures = decorate.decorate(captures)
         combined = stitcher.combine(captures)
         key = multi_display.display({'combined': combined})
         if key == ord('q'):
