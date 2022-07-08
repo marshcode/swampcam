@@ -1,9 +1,7 @@
 import threading
 
-class CameraCapture(object):
-    def __init__(self, image, timestamp):
-        self.image = image
-        self.timestamp = timestamp
+from swampcam.models.capture import Capture
+
 
 class CameraBank(object):
     def __init__(self):
@@ -12,7 +10,7 @@ class CameraBank(object):
 
     def add_capture(self, name, image, timestamp):
         with self.lock:
-            self.cameras[name] = CameraCapture(image, timestamp)
+            self.cameras[name] = Capture(image, timestamp)
 
     def get_captures(self):
         with self.lock:

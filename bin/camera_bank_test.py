@@ -30,9 +30,7 @@ try:
             continue
 
         combined = stitcher.combine(captures)
-        key = multi_display.display({'combined': camera_bank_mod.CameraCapture(
-            combined, datetime.datetime.now()
-        )})
+        key = multi_display.display({'combined': combined})
         if key == ord('q'):
             break
 except Exception as e:

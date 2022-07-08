@@ -1,5 +1,9 @@
+import datetime
+
 import numpy as np
 import math
+
+from swampcam.models import capture as capture_mod
 
 class ImageStitcher(object):
     def __init__(self):
@@ -47,4 +51,5 @@ class ImageStitcher(object):
                 w_start = w_end
             h_start += max_height
 
-        return canvas
+
+        return capture_mod.Capture(image=canvas, timestamp=datetime.datetime.now())
