@@ -28,14 +28,17 @@ class MotionDetector(object):
         countour_count = 0
         countour_total_area = 0
         for i in countour:
-            if cv2.contourArea(i) < 50:
-                continue
 
+            over_threshold = cv2.contourArea(i) >= 50
             (x, y, w, h) = cv2.boundingRect(i)
-            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 2)
 
-            countour_count += 1
-            countour_total_area += w*h
+            box_color = (255, 255, 255)
+            if over_threshold:
+                countour_count += 1
+                countour_total_area += w * h
+                box_color = (0, 0, 255)
+
+            cv2.rectangle(frame, (x, y), (x + w, y + h), box_color, 2)
 
         data['countour_count'] = countour_count
         data['countour_total_area'] = countour_total_area
