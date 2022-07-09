@@ -1,5 +1,6 @@
 import threading
 import time
+import traceback
 
 class ThreadBank(object):
 
@@ -17,5 +18,9 @@ class ThreadBank(object):
 
     def _run(self):
         while self.keep_going:
-            self.camera_bank.capture()
+            try:
+                self.camera_bank.capture()
+            except Exception as e:
+                print(traceback.format_exc())
+
             time.sleep(self.delay_ms / 1_000)
