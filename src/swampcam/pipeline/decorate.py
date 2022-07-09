@@ -8,10 +8,10 @@ def decorate(captures):
 def write_text(image, label, position, size):
     px,py = position
 
-    cv2.putText(image, label, (px+2, py+2), cv2.FONT_HERSHEY_SIMPLEX,
-                size, (0, 0, 0), 2, cv2.LINE_AA)
+    cv2.putText(image, label, position, cv2.FONT_HERSHEY_SIMPLEX,
+                size, (0, 0, 0), 6, cv2.LINE_AA)
 
-    cv2.putText(image, label, (px, py), cv2.FONT_HERSHEY_SIMPLEX,
+    cv2.putText(image, label, position, cv2.FONT_HERSHEY_SIMPLEX,
                 size, (255, 255, 255), 2, cv2.LINE_AA)
 
 
