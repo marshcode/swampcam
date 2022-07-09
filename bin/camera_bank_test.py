@@ -11,13 +11,14 @@ from swampcam.pipeline import resize
 from swampcam.pipeline import stitch
 from swampcam.pipeline import decorate
 from swampcam.pipeline import motion
+from swampcam.pipeline import signal
 
 camera_bank = camera_bank_mod.CameraBank()
 cv2_camera_bank = cv2_bank.CV2VideoCaptureBank(camera_bank)
 cv2_camera_bank.add_camera("cam1", 0)
 
-#cv2_camera_bank.add_camera("video", r"C:\Users\david\WebstormProjects\tiefighter.mp4")
-#cv2_camera_bank.add_camera("video2", r"C:\Users\david\WebstormProjects\vader.mp4")
+cv2_camera_bank.add_camera("video", r"C:\Users\david\WebstormProjects\tiefighter.mp4")
+cv2_camera_bank.add_camera("video2", r"C:\Users\david\WebstormProjects\vader.mp4")
 #https://www.foscam.com/faqs/view.html?id=81
 #cv2_bank.add_camera("cam2", "rtsp://192.168.86.150:8080/h264_ulaw.sdp")
 cv2_bank_thread = thread_bank.ThreadBank(cv2_camera_bank, delay_ms=0)
@@ -25,11 +26,13 @@ cv2_bank_thread.start()
 
 stitcher = stitch.ImageStitcher()
 motion_detector_pipeline = motion.MotionDetectorPipeline()
+signal_pipeline = signal.SignalDetectorPipeline(motion_detector_pipeline.METADATA_CONTOUR_COUNT)
 pipeline_actions = [
     lambda captures: resize.resize(400, 300, captures),
     decorate.decorate,
     stitcher.combine,
-    motion_detector_pipeline.detect
+    motion_detector_pipeline.detect,
+    signal_pipeline.detect
 ]
 
 multi_display = multi_display.MultiDisplay()
