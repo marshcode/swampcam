@@ -32,13 +32,12 @@ try:
             continue
 
         resized = resize.resize(400, 300, captures)
-        motion = detector_pipeline.detect(resized)
-        print(motion)
 
-        decorated = decorate.decorate(motion)
+        decorated = decorate.decorate(resized)
         combined = stitcher.combine(decorated)
+        motion = detector_pipeline.detect(combined)
 
-        key = multi_display.display(combined)
+        key = multi_display.display(motion)
         if key == ord('q'):
             break
 except Exception as e:

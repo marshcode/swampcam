@@ -10,7 +10,7 @@ class Detector(object):
         data = {}
 
         # if the average frame is None, initialize it
-        if self.average is None:
+        if self.average is None or gray.shape != self.average.shape:
             self.average = gray.copy().astype("float")
             return frame, {}
 
