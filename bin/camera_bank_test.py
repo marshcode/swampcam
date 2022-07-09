@@ -12,6 +12,7 @@ from swampcam.pipeline import stitch
 from swampcam.pipeline import decorate
 from swampcam.pipeline import motion
 from swampcam.pipeline import signal
+from swampcam.pipeline import operations
 
 camera_bank = camera_bank_mod.CameraBank()
 cv2_camera_bank = cv2_bank.CV2VideoCaptureBank(camera_bank)
@@ -37,6 +38,9 @@ pipeline_actions = [
 
 multi_display = multi_display.MultiDisplay()
 
+def signal_reduce(_, capture, current):
+    return current or capture.metadata.get(signal_pipeline.METADATA_SIGNAL_UP, False)
+
 try:
     while True:
         captures = camera_bank.get_captures()
@@ -44,6 +48,7 @@ try:
             continue
 
         captures = pipeline.execute_pipeline(pipeline_actions, captures)
+        signal_up = operations.reduce(captures, signal_reduce, initial=False)
 
         key = multi_display.display(captures)
         if key == ord('q'):

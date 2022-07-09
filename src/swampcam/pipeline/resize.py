@@ -1,6 +1,6 @@
 import cv2
 
-from swampcam.pipeline.map import map
+from swampcam.pipeline.operations import map
 
 def resize(target_width, target_height, captures):
     return map(captures, lambda _, capture: _do_resize(capture, target_width, target_height))

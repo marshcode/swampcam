@@ -1,6 +1,6 @@
 import cv2
 
-from swampcam.pipeline.map import map
+from swampcam.pipeline.operations import map
 
 def decorate(captures):
     return map(captures, lambda name, capture: _do_decorate(name, capture))

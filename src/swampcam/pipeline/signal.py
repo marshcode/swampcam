@@ -1,8 +1,10 @@
 
-from swampcam.pipeline.map import map
+from swampcam.pipeline.operations import map
 from swampcam.detectors import signal as signal_mod
 
 class SignalDetectorPipeline(object):
+
+    METADATA_SIGNAL_UP = 'signal_up'
 
     def __init__(self, signal_key):
         self.signals = dict()
@@ -24,5 +26,5 @@ class SignalDetectorPipeline(object):
 
         signal_value = capture.metadata.get(self.signal_key)
         signal.update_signal(signal_value)
-        capture.metadata['signal_up'] = signal.get_signal()
+        capture.metadata[self.METADATA_SIGNAL_UP] = signal.get_signal()
         return capture

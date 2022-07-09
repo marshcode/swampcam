@@ -6,3 +6,10 @@ def map(captures, transform):
         resized_captures[name] = capture
 
     return resized_captures
+
+def reduce(captures, reduce, initial):
+
+    current = initial
+    for name, capture in captures.items():
+        current = reduce(name, capture, initial)
+    return current

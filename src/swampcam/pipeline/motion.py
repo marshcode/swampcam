@@ -1,5 +1,5 @@
 
-from swampcam.pipeline.map import map
+from swampcam.pipeline.operations import map
 from swampcam.detectors import motion as detector_mod
 
 class MotionDetectorPipeline(object):
