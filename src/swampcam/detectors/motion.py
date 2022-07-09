@@ -1,6 +1,6 @@
 import cv2
 
-class Detector(object):
+class MotionDetector(object):
     def __init__(self):
         self.average = None
 
@@ -10,7 +10,9 @@ class Detector(object):
         data = {}
 
         # if the average frame is None, initialize it
-        if self.average is None or gray.shape != self.average.shape:
+        has_average = self.average is not None
+        resized = has_average and gray.shape != self.average.shape
+        if not has_average or resized:
             self.average = gray.copy().astype("float")
             return frame, {}
 

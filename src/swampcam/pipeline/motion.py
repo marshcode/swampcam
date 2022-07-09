@@ -1,6 +1,6 @@
 
 from swampcam.pipeline.map import map
-from swampcam.motion import detector as detector_mod
+from swampcam.detectors import motion as detector_mod
 
 class DetectorPipeline(object):
 
@@ -14,7 +14,7 @@ class DetectorPipeline(object):
 
         detector = self.detectors.get(name)
         if not detector:
-            detector = detector_mod.Detector()
+            detector = detector_mod.MotionDetector()
             self.detectors[name] = detector
 
         frame, result = detector.detect(capture.image)
