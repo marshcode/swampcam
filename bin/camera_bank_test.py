@@ -28,16 +28,17 @@ detector_pipeline = motion.DetectorPipeline()
 try:
     while True:
         captures = camera_bank.get_captures()
-
         if not captures:
             continue
 
-        captures = resize.resize(400, 300, captures)
-        captures = decorate.decorate(captures)
-        combined = stitcher.combine(captures)
-        detector_pipeline.detect(captures)
+        resized = resize.resize(400, 300, captures)
+        motion = detector_pipeline.detect(resized)
+        print(motion)
 
-        key = multi_display.display({'combined': combined})
+        decorated = decorate.decorate(motion)
+        combined = stitcher.combine(decorated)
+
+        key = multi_display.display(combined)
         if key == ord('q'):
             break
 except Exception as e:

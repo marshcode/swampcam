@@ -8,7 +8,7 @@ class DetectorPipeline(object):
         self.detectors = dict()
 
     def detect(self, captures):
-        map(captures, lambda name, capture: self._do_detect(name, capture))
+        return map(captures, lambda name, capture: self._do_detect(name, capture))
 
     def _do_detect(self, name, capture):
 
@@ -22,3 +22,4 @@ class DetectorPipeline(object):
             capture.metadata['countour_count'] = result['countour_count']
             capture.metadata['countour_total_area'] = result['countour_total_area']
         capture.image = frame
+        return capture

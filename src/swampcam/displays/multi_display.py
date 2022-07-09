@@ -6,6 +6,7 @@ class MultiDisplay(object):
 
     def display(self, captures):
         for name, capture in captures.items():
-            cv2.imshow(name, capture.image)
+            if capture:
+                cv2.imshow(name, capture.image)
 
         return cv2.waitKey(20)

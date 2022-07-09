@@ -54,4 +54,4 @@ class ImageStitcher(object):
             h_start += max_height
 
 
-        return capture_mod.Capture(image=canvas, timestamp=datetime.datetime.now())
+        return {'combined': capture_mod.Capture(image=canvas, timestamp=datetime.datetime.now())}

@@ -22,7 +22,6 @@ class Detector(object):
         threshold = cv2.dilate(threshold,None)
 
         countour,heirarchy = cv2.findContours(threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        has_motion = False
 
         countour_count = 0
         countour_total_area = 0
