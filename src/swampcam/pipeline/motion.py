@@ -2,7 +2,7 @@
 from swampcam.pipeline.map import map
 from swampcam.detectors import motion as detector_mod
 
-class DetectorPipeline(object):
+class MotionDetectorPipeline(object):
 
     def __init__(self):
         self.detectors = dict()
