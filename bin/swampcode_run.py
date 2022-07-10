@@ -16,6 +16,8 @@ from swampcam.pipeline import motion
 from swampcam.pipeline import signal
 from swampcam.pipeline import operations
 
+from swampcam.web import webserver
+
 camera_bank = camera_bank_mod.CameraBank()
 cv2_camera_bank = cv2_bank.CV2VideoCaptureBank(camera_bank)
 cv2_camera_bank.add_camera("cam1", 0)
@@ -48,6 +50,18 @@ multi_display = multi_display.MultiDisplay()
 def signal_reduce(_, capture, current):
     return current or capture.metadata.get(signal_pipeline.METADATA_SIGNAL_UP, False)
 
+#######################
+#Web
+#######################
+flask_app = webserver.create()
+web_thread = threading.Thread(target=lambda: flask_app.run(
+    host='0.0.0.0', port=4785, debug=True, threaded=True, use_reloader=False
+))
+web_thread.start()
+
+#######################
+#MOTION
+#######################
 try:
     while True:
         captures = camera_bank.get_captures()
