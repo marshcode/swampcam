@@ -16,7 +16,7 @@ from swampcam.pipeline import motion
 from swampcam.pipeline import signal
 from swampcam.pipeline import operations
 
-from swampcam.web import webserver
+from swampcam.web import factory as web_factory
 
 camera_bank = camera_bank_mod.CameraBank()
 cv2_camera_bank = cv2_bank.CV2VideoCaptureBank(camera_bank)
@@ -34,6 +34,23 @@ cv2_camera_bank.add_camera("video2", r"C:\Users\david\WebstormProjects\vader.mp4
 cv2_bank_thread = thread_bank.ThreadBank(cv2_camera_bank, delay_ms=0)
 cv2_bank_thread.start()
 
+multi_display = multi_display.MultiDisplay()
+
+def signal_reduce(_, capture, current):
+    return current or capture.metadata.get(signal_pipeline.METADATA_SIGNAL_UP, False)
+
+#######################
+#Web
+#######################
+flask_app = web_factory.create()
+web_thread = threading.Thread(target=lambda: flask_app.run(
+    host='0.0.0.0', port=4785, debug=True, threaded=True, use_reloader=False
+))
+web_thread.start()
+
+#######################
+#MOTION
+#######################
 stitcher = stitch.ImageStitcher()
 motion_detector_pipeline = motion.MotionDetectorPipeline()
 signal_pipeline = signal.SignalDetectorPipeline(motion_detector_pipeline.METADATA_CONTOUR_COUNT)
@@ -45,23 +62,6 @@ pipeline_actions = [
     signal_pipeline.detect
 ]
 
-multi_display = multi_display.MultiDisplay()
-
-def signal_reduce(_, capture, current):
-    return current or capture.metadata.get(signal_pipeline.METADATA_SIGNAL_UP, False)
-
-#######################
-#Web
-#######################
-flask_app = webserver.create()
-web_thread = threading.Thread(target=lambda: flask_app.run(
-    host='0.0.0.0', port=4785, debug=True, threaded=True, use_reloader=False
-))
-web_thread.start()
-
-#######################
-#MOTION
-#######################
 try:
     while True:
         captures = camera_bank.get_captures()
