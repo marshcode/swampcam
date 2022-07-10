@@ -12,6 +12,8 @@ from swampcam.pipeline import motion
 from swampcam.pipeline import signal
 from swampcam.pipeline import operations
 
+from swampcam.web.factory import WebInterface
+
 class CameraBankInterface(object):
     def __init__(self):
         self.camera_bank = camera_bank_mod.CameraBank()
@@ -29,6 +31,16 @@ class CameraBankInterface(object):
         self.cv2_bank_thread.stop()
         self.cv2_bank.destroy()
 
+
+class SwampCampBinterface(WebInterface):
+
+    def __init__(self, camera_bank, capture_name):
+        self.camera_bank = camera_bank
+        self.capture_name = capture_name
+
+    def get_capture_image(self):
+        capture = self.camera_bank.get_captures().get(self.capture_name)
+        return capture.image if capture else None
 
 
 def create_motion_runner(camera_bank):

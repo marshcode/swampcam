@@ -23,11 +23,12 @@ threading.Thread(target=add_delay, daemon=True).start()
 #######################
 web_buffer = camera_bank.CameraBank()
 web_buffer_key = 'web_buffer'
+web_interface = bin_factory.SwampCampBinterface(web_buffer, web_buffer_key)
 
 #######################
 #Web
 #######################
-flask_app = web_factory.create(web_buffer, web_buffer_key)
+flask_app = web_factory.create(web_interface)
 web_thread = threading.Thread(name="flask", daemon=True, target=lambda: flask_app.run(
     host='0.0.0.0', port=4785, debug=True, threaded=True, use_reloader=False
 ))

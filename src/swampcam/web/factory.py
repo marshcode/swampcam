@@ -1,23 +1,32 @@
 import os
+from abc import ABCMeta, abstractmethod
 
 from swampcam.web import templates
 
 import flask
 import cv2
 
-def create(camera_bank, capture_key):
+
+class WebInterface(metaclass=ABCMeta):
+
+    @abstractmethod
+    def get_capture_image(self):
+        pass
+
+# https://pyimagesearch.com/2019/09/02/opencv-stream-video-to-web-browser-html-page/
+def create(web_interface: WebInterface):
     template_dir = os.path.dirname(os.path.abspath(templates.__file__))
     app = flask.Flask("admin", template_folder=template_dir)
 
     def generate():
         while True:
-            capture = camera_bank.get_captures().get(capture_key)
+            image = web_interface.get_capture_image()
             # wait until the lock is acquired
-            if not capture or capture.image is None:
+            if image is None:
                 continue
 
             # encode the frame in JPEG format
-            (flag, encodedImage) = cv2.imencode(".jpg", capture.image)
+            (flag, encodedImage) = cv2.imencode(".jpg", image)
             # ensure the frame was successfully encoded
             if not flag:
                 continue
