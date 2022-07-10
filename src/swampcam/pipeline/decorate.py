@@ -6,7 +6,6 @@ def decorate(captures):
     return map(captures, lambda name, capture: _do_decorate(name, capture))
 
 def write_text(image, label, position, size):
-    px,py = position
 
     cv2.putText(image, label, position, cv2.FONT_HERSHEY_SIMPLEX,
                 size, (0, 0, 0), 6, cv2.LINE_AA)

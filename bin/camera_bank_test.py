@@ -1,4 +1,6 @@
 import traceback
+import threading
+import time
 
 from swampcam.camera_banks import camera_bank as camera_bank_mod
 from swampcam.camera_banks import cv2_bank as cv2_bank
@@ -18,7 +20,12 @@ camera_bank = camera_bank_mod.CameraBank()
 cv2_camera_bank = cv2_bank.CV2VideoCaptureBank(camera_bank)
 cv2_camera_bank.add_camera("cam1", 0)
 
-cv2_camera_bank.add_camera("video", r"C:\Users\david\WebstormProjects\tiefighter.mp4")
+def add_delay():
+    time.sleep(5)
+    cv2_camera_bank.add_camera("video", r"C:\Users\david\WebstormProjects\tiefighter.mp4")
+
+threading.Thread(target=add_delay).start()
+
 cv2_camera_bank.add_camera("video2", r"C:\Users\david\WebstormProjects\vader.mp4")
 #https://www.foscam.com/faqs/view.html?id=81
 #cv2_bank.add_camera("cam2", "rtsp://192.168.86.150:8080/h264_ulaw.sdp")
