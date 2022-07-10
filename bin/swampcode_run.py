@@ -14,14 +14,14 @@ camera_interface.add_cv2("video2", r"C:\Users\david\WebstormProjects\vader.mp4")
 def add_delay():
     time.sleep(5)
     camera_interface.add_cv2("video", r"C:\Users\david\WebstormProjects\tiefighter.mp4")
-threading.Thread(target=add_delay).start()
+threading.Thread(target=add_delay, daemon=True).start()
 
 
 #######################
 #Web
 #######################
 flask_app = web_factory.create()
-web_thread = threading.Thread(name="flask", target=lambda: flask_app.run(
+web_thread = threading.Thread(name="flask", daemon=True, target=lambda: flask_app.run(
     host='0.0.0.0', port=4785, debug=True, threaded=True, use_reloader=False
 ))
 web_thread.start()
@@ -38,7 +38,3 @@ for captures, signal_up in motion_runner():
         break
 
 camera_interface.stop()
-
-while len(threading.enumerate()):
-    print(threading.enumerate())
-    time.sleep(1)
