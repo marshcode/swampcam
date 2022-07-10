@@ -1,20 +1,13 @@
-import traceback
 import threading
 import time
+
+import bin_factory
 
 from swampcam.camera_banks import camera_bank as camera_bank_mod
 from swampcam.camera_banks import cv2_bank as cv2_bank
 from swampcam.camera_banks import thread_bank
 
 from swampcam.displays import multi_display
-
-from swampcam.pipeline import pipeline
-from swampcam.pipeline import resize
-from swampcam.pipeline import stitch
-from swampcam.pipeline import decorate
-from swampcam.pipeline import motion
-from swampcam.pipeline import signal
-from swampcam.pipeline import operations
 
 from swampcam.web import factory as web_factory
 
@@ -36,8 +29,7 @@ cv2_bank_thread.start()
 
 multi_display = multi_display.MultiDisplay()
 
-def signal_reduce(_, capture, current):
-    return current or capture.metadata.get(signal_pipeline.METADATA_SIGNAL_UP, False)
+
 
 #######################
 #Web
@@ -51,31 +43,12 @@ web_thread.start()
 #######################
 #MOTION
 #######################
-stitcher = stitch.ImageStitcher()
-motion_detector_pipeline = motion.MotionDetectorPipeline()
-signal_pipeline = signal.SignalDetectorPipeline(motion_detector_pipeline.METADATA_CONTOUR_COUNT)
-pipeline_actions = [
-    lambda captures: resize.resize(400, 300, captures),
-    decorate.decorate,
-    stitcher.combine,
-    motion_detector_pipeline.detect,
-    signal_pipeline.detect
-]
+motion_runner = bin_factory.create_motion_runner(camera_bank)
+for captures, signal_up in motion_runner():
+    key = multi_display.display(captures)
+    if key == ord('q'):
+        break
 
-try:
-    while True:
-        captures = camera_bank.get_captures()
-        if not captures:
-            continue
-
-        captures = pipeline.execute_pipeline(pipeline_actions, captures)
-        signal_up = operations.reduce(captures, signal_reduce, initial=False)
-
-        key = multi_display.display(captures)
-        if key == ord('q'):
-            break
-except Exception as e:
-    print(traceback.format_exc())
 
 cv2_bank_thread.stop()
 cv2_camera_bank.destroy()
