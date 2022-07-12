@@ -32,7 +32,7 @@ class CameraBankInterface(object):
         self.cv2_bank.destroy()
 
 
-class SwampCampBinterface(WebInterface):
+class SwampCamBinterface(WebInterface):
 
     def __init__(self, camera_bank, capture_name):
         self.camera_bank = camera_bank

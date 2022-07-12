@@ -23,7 +23,7 @@ threading.Thread(target=add_delay, daemon=True).start()
 #######################
 web_buffer = camera_bank.CameraBank()
 web_buffer_key = 'web_buffer'
-web_interface = bin_factory.SwampCampBinterface(web_buffer, web_buffer_key)
+web_interface = bin_factory.SwampCamBinterface(web_buffer, web_buffer_key)
 
 #######################
 #Web
